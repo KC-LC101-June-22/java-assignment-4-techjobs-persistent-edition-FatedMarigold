@@ -56,35 +56,40 @@ public class HomeController {
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Job");
+            model.addAttribute("employers",employerRepository.findAll());
+            model.addAttribute("skills", skillRepository.findAll());
             return "add";
         }
 
         Optional<Employer> oEmployer = employerRepository.findById(employerId);
-        if (oEmployer.isEmpty()) {
+        if (!oEmployer.isPresent()) {
             model.addAttribute("title", "Employer Unavailable With Id" + employerId);
-            return "add";
         } else {
             Employer employer = oEmployer.get();
             newJob.setEmployer(employer);
-            employerRepository.save(employer);
         }
 
+//        Employer employer = employerRepository.findById(employerId).orElse(new Employer());
+//        newJob.setEmployer(employer);
+//
 //        List<Skill> skillList = new ArrayList<>();
-//        for (int skillId : skills) {
-//            Optional<Skill> oSkill = skillRepository.findById(skillId);
-//            if (oSkill.isEmpty()) {
-//                model.addAttribute("title", "Skill Unavailable with Id" + skillId);
-//                return "add";
-//            } else {
-//                skillList.add(oSkill.get());
-//                skillRepository.save(oSkill.get());
+//        if (skills != null) {
+//            for (int skillId : skills) {
+//                Optional<Skill> oSkill = skillRepository.findById(skillId);
+//                if (oSkill.isEmpty()) {
+//                    model.addAttribute("title", "Skill Unavailable with Id" + skillId);
+//                    return "add";
+//                } else {
+//                    skillList.add(oSkill.get());
+//                }
 //            }
+//            newJob.setSkills((List<Skill>) skillRepository.findAllById(skills));
 //        }
 
         List<Skill> skillObjs = (List<Skill>) skillRepository.findAllById(skills);
         newJob.setSkills(skillObjs);
 //        skillRepository.findAllById(skills);
-//        newJob.setSkills((List<Skill>) skillRepository.findAllById(skills));
+
         jobRepository.save(newJob);
 
         return "redirect:";

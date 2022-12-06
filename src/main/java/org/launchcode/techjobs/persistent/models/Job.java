@@ -21,9 +21,10 @@ public class Job extends AbstractEntity{
     public Job(Employer anEmployer, List<Skill> someSkills) {
         super();
         this.employer = anEmployer;
-        for(Skill skill : someSkills) {
-            this.skills.add(skill);
-        }
+//        for(Skill skill : someSkills) {
+//            this.skills.add(skill);
+//        }
+        this.skills = someSkills;
     }
 
     // Getters and setters.
